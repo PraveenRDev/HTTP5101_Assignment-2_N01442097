@@ -12,6 +12,7 @@ namespace HTTP5101_Assignment_2_N01442097.Controllers
         /// <summary>
         /// Calculate the calories according to the chosen menu items. 
         /// </summary>
+        /// All the params should be positive numbers less than 5
         /// <param name="burger">choice of burger</param>
         /// <param name="drink">choice of drink</param>
         /// <param name="side">choice of side</param>
@@ -25,10 +26,27 @@ namespace HTTP5101_Assignment_2_N01442097.Controllers
         /// GET api/J1/Menu/1/2/3/4 ->
         /// "Your total calorie count is 691"
         /// </example>
+        /// <example>
+        /// GET api/J1/Menu/1/3/3/2 ->
+        /// "Your total calorie count is 915"
+        /// </example>
+        /// <example> 
+        /// GET api/J1/Menu/1/-2/3/-4 ->
+        /// "Invalid Input"
+        /// </example>
+        /// <example>
+        /// GET api/J1/Menu/1/8/3/5 ->
+        /// "Invalid Input"
+        /// </example>
         [HttpGet]
         [Route("api/J1/Menu/{burger}/{drink}/{side}/{dessert}")]
         public string CalculateCalories(int burger, int drink, int side, int dessert)
         {
+            // validate if any negative numbers are passsed
+            if (burger < 0 || burger > 4 || drink < 0 || drink > 4 || side < 0 || side > 4 || dessert < 0 || dessert > 4)
+            {
+                return "Invalid Input";
+            }
             // initialize a variable to calculate the total calories (should be increased according to the chosen item)
             int calorieCounter = 0;
 
@@ -50,7 +68,7 @@ namespace HTTP5101_Assignment_2_N01442097.Controllers
                     calorieCounter += 420;
                     break;
 
-                // default - no burger (0 Calories)
+                // default - no burger (0 Calories) 
                 default:
                     calorieCounter += 0;
                     break;
